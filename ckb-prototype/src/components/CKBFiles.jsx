@@ -38,7 +38,7 @@ function BrandScopeSelector({ scope, onChange, onCancel, onConfirm, confirmLabel
               value={opt.value}
               checked={localScope.type === opt.value}
               onChange={() => setLocalScope({ type: opt.value })}
-              className="mt-0.5 accent-[#0057FF]"
+              className="mt-0.5 accent-[#2563EB]"
             />
             <div>
               <p className="text-sm font-medium text-gray-800">{opt.label}</p>
@@ -75,7 +75,7 @@ function BrandScopeSelector({ scope, onChange, onCancel, onConfirm, confirmLabel
         </button>
         <button
           onClick={() => onConfirm(computedScope())}
-          className="px-4 py-2 text-sm font-medium text-white bg-[#0057FF] rounded-lg hover:bg-blue-700 transition-colors"
+          className="px-4 py-2 text-sm font-medium text-white bg-[#2563EB] rounded-lg hover:bg-blue-700 transition-colors"
         >
           {confirmLabel}
         </button>
@@ -140,11 +140,11 @@ export default function CKBFiles({ adminMode }) {
             onDragLeave={() => setDragOver(false)}
             onDrop={handleDrop}
             className={`border-2 border-dashed rounded-xl p-10 mb-6 text-center transition-colors cursor-pointer
-              ${dragOver ? 'border-[#0057FF] bg-blue-50' : 'border-gray-300 bg-white hover:border-gray-400 hover:bg-gray-50'}`}
+              ${dragOver ? 'border-[#2563EB] bg-blue-50' : 'border-gray-300 bg-white hover:border-gray-400 hover:bg-gray-50'}`}
             onClick={() => document.getElementById('fileInput').click()}
           >
             <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center mx-auto mb-3">
-              <Upload size={22} className="text-[#0057FF]" />
+              <Upload size={22} className="text-[#2563EB]" />
             </div>
             <p className="font-medium text-gray-800 mb-1">Drop files here or click to browse</p>
             <p className="text-sm text-gray-500">Supported: PDF, DOCX, PPTX, XLSX — max 50MB</p>
@@ -153,7 +153,7 @@ export default function CKBFiles({ adminMode }) {
         ) : (
           <div className="mb-6">
             <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 mb-3 flex items-center gap-3">
-              <FileText size={18} className="text-[#0057FF]" />
+              <FileText size={18} className="text-[#2563EB]" />
               <div>
                 <p className="text-sm font-medium text-gray-800">{pendingFile?.name || 'file.pdf'}</p>
                 <p className="text-xs text-gray-500">Select brand scope before uploading</p>
@@ -189,7 +189,7 @@ export default function CKBFiles({ adminMode }) {
             <div key={file.id}>
               {editingScope === file.id ? (
                 <div className="px-5 py-4 bg-blue-50">
-                  <p className="text-xs font-semibold text-gray-700 mb-3">Edit brand scope for: <span className="text-[#0057FF]">{file.name}</span></p>
+                  <p className="text-xs font-semibold text-gray-700 mb-3">Edit brand scope for: <span className="text-[#2563EB]">{file.name}</span></p>
                   <BrandScopeSelector
                     scope={file.scope}
                     onCancel={() => setEditingScope(null)}
@@ -201,8 +201,8 @@ export default function CKBFiles({ adminMode }) {
                 <div className={`grid grid-cols-[2fr_1fr_1fr_1fr_2fr_auto] gap-4 px-5 py-3.5 items-start
                   ${idx < files.length - 1 ? 'border-b border-gray-50' : ''} hover:bg-gray-50 transition-colors`}>
                   <div className="flex items-center gap-2 min-w-0">
-                    <FileText size={14} className="text-[#0057FF] shrink-0" />
-                    <button className="text-sm text-[#0057FF] hover:underline truncate text-left">{file.name}</button>
+                    <FileText size={14} className="text-[#2563EB] shrink-0" />
+                    <button className="text-sm text-[#2563EB] hover:underline truncate text-left">{file.name}</button>
                   </div>
                   <span className="text-sm text-gray-600">{file.uploadedBy}</span>
                   <span className="text-sm text-gray-600">{file.date}</span>

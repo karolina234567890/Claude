@@ -124,7 +124,7 @@ export default function CKBFacts({ adminMode }) {
                     key={opt.value}
                     onClick={() => { setBrandFilter(opt.value); setBrandFilterOpen(false); }}
                     className={`w-full text-left px-4 py-2.5 text-sm transition-colors flex items-center justify-between
-                      ${brandFilter === opt.value ? 'bg-blue-50 text-[#0057FF] font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
+                      ${brandFilter === opt.value ? 'bg-blue-50 text-[#2563EB] font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
                   >
                     {opt.label}
                     {brandFilter === opt.value && <Check size={14} />}
@@ -150,7 +150,7 @@ export default function CKBFacts({ adminMode }) {
                 <button
                   onClick={() => { setTopicFilter('all'); setTopicFilterOpen(false); }}
                   className={`w-full text-left px-4 py-2.5 text-sm transition-colors flex items-center justify-between
-                    ${topicFilter === 'all' ? 'bg-blue-50 text-[#0057FF] font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
+                    ${topicFilter === 'all' ? 'bg-blue-50 text-[#2563EB] font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
                 >
                   All topics
                   {topicFilter === 'all' && <Check size={14} />}
@@ -160,7 +160,7 @@ export default function CKBFacts({ adminMode }) {
                     key={t.id}
                     onClick={() => { setTopicFilter(t.id); setTopicFilterOpen(false); }}
                     className={`w-full text-left px-4 py-2.5 text-sm transition-colors flex items-center justify-between
-                      ${topicFilter === t.id ? 'bg-blue-50 text-[#0057FF] font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
+                      ${topicFilter === t.id ? 'bg-blue-50 text-[#2563EB] font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
                   >
                     {t.name}
                     {topicFilter === t.id && <Check size={14} />}
@@ -215,7 +215,7 @@ export default function CKBFacts({ adminMode }) {
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
-                      <Icon size={16} className="text-[#0057FF]" />
+                      <Icon size={16} className="text-[#2563EB]" />
                     </div>
                     <div>
                       <span className="font-semibold text-gray-900 text-sm">{topic.name}</span>
@@ -260,7 +260,7 @@ export default function CKBFacts({ adminMode }) {
                           />
                           <div className="flex gap-2 mt-2 justify-end">
                             <button onClick={() => setEditingSummary(null)} className="text-xs text-gray-500 px-3 py-1 rounded hover:bg-amber-100">Cancel</button>
-                            <button onClick={() => handleSummarySave(topic.id)} className="text-xs font-medium text-white bg-[#0057FF] px-3 py-1 rounded-lg">Save</button>
+                            <button onClick={() => handleSummarySave(topic.id)} className="text-xs font-medium text-white bg-[#2563EB] px-3 py-1 rounded-lg">Save</button>
                           </div>
                         </div>
                       ) : (
@@ -280,14 +280,14 @@ export default function CKBFacts({ adminMode }) {
                               <textarea
                                 value={editText}
                                 onChange={e => setEditText(e.target.value)}
-                                className="w-full border border-gray-300 rounded-lg p-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-[#0057FF]"
+                                className="w-full border border-gray-300 rounded-lg p-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-[#2563EB]"
                                 rows={3}
                               />
                               <div className="flex gap-2 mt-2 justify-end">
                                 <button onClick={() => setEditingFact(null)} className="text-xs text-gray-500 px-3 py-1 rounded hover:bg-gray-100">Cancel</button>
                                 <button
                                   onClick={() => handleEditSave(topic.id, fact.id)}
-                                  className="text-xs font-medium text-white bg-[#0057FF] px-3 py-1 rounded-lg"
+                                  className="text-xs font-medium text-white bg-[#2563EB] px-3 py-1 rounded-lg"
                                 >
                                   Save
                                 </button>
@@ -303,7 +303,7 @@ export default function CKBFacts({ adminMode }) {
                                     {fact.source.type === 'manual' ? (
                                       <span className="text-xs text-gray-400 italic">Manual input</span>
                                     ) : (
-                                      <button className="text-xs text-[#0057FF] underline underline-offset-2 hover:text-blue-800">
+                                      <button className="text-xs text-[#2563EB] underline underline-offset-2 hover:text-blue-800">
                                         {fact.source.name}
                                       </button>
                                     )}
@@ -345,7 +345,7 @@ export default function CKBFacts({ adminMode }) {
                         ) : (
                           <button
                             onClick={() => setAddingTo(topic.id)}
-                            className="flex items-center gap-1.5 text-xs font-medium text-[#0057FF] hover:text-blue-800 px-3 py-2 rounded-lg hover:bg-blue-50 transition-colors border border-dashed border-[#0057FF]/30 w-full justify-center"
+                            className="flex items-center gap-1.5 text-xs font-medium text-[#2563EB] hover:text-blue-800 px-3 py-2 rounded-lg hover:bg-blue-50 transition-colors border border-dashed border-[#2563EB]/30 w-full justify-center"
                           >
                             <Plus size={13} />
                             Add fact to this topic

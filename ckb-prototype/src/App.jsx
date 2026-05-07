@@ -24,7 +24,7 @@ export default function App() {
           />
         )}
         {screen === 'ckb' && (
-          <CKBScreen />
+          <CKBScreen onBack={() => setScreen('home')} />
         )}
         {screen === 'media-plan' && (
           <MediaPlanScreen onBack={() => setScreen('home')} />

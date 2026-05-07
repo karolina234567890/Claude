@@ -1,49 +1,89 @@
 import { useState } from 'react';
-import { ChevronDown, User, Settings, BookOpen } from 'lucide-react';
+import { ChevronDown, Bell, HelpCircle, Settings } from 'lucide-react';
 
 export default function TopNav({ market, onMarketChange, onOpenCKB }) {
   const [marketOpen, setMarketOpen] = useState(false);
-  const [clientSettingOpen, setClientSettingOpen] = useState(false);
+  const [clientOpen, setClientOpen] = useState(false);
+  const [projectOpen, setProjectOpen] = useState(false);
 
   const markets = ['United States', 'United Kingdom', 'Canada', 'Germany', 'Global'];
 
   return (
-    <nav className="bg-[#0F1117] h-14 flex items-center px-6 gap-4 relative z-50 shrink-0">
-      {/* Logo + App name */}
+    <nav className="bg-white border-b border-gray-200 h-12 flex items-center px-4 gap-0 relative z-50 shrink-0">
+      {/* OMNI+ logo */}
       <div className="flex items-center gap-2 mr-4">
-        <div className="w-7 h-7 bg-[#0057FF] rounded-md flex items-center justify-center">
-          <BookOpen size={14} className="text-white" />
+        <div className="w-7 h-7 bg-gray-900 rounded flex items-center justify-center">
+          <span className="text-white font-bold text-xs tracking-tight">OMNI<span className="text-blue-400">+</span></span>
         </div>
-        <span className="text-white font-semibold text-sm tracking-wide">Planning Agent</span>
+        <span className="text-[#2563EB] font-semibold text-sm">Planning Console</span>
       </div>
 
-      <div className="w-px h-5 bg-white/20" />
+      <div className="w-px h-5 bg-gray-200 mx-3" />
 
       {/* Client dropdown */}
-      <button className="flex items-center gap-1.5 text-white text-sm hover:bg-white/10 px-3 py-1.5 rounded-md transition-colors">
-        <span className="font-medium">Soft Scrub</span>
-        <ChevronDown size={14} className="text-white/60" />
-      </button>
+      <div className="relative">
+        <button
+          onClick={() => { setClientOpen(o => !o); setMarketOpen(false); setProjectOpen(false); }}
+          className="flex items-center gap-1 text-sm text-gray-600 hover:text-gray-900 px-2 py-1.5 rounded hover:bg-gray-50 transition-colors"
+        >
+          <span className="text-gray-400 text-xs">Client:</span>
+          <span className="font-medium text-gray-800 ml-1">Soft Scrub</span>
+          <ChevronDown size={13} className="text-gray-400 ml-0.5" />
+        </button>
+        {clientOpen && (
+          <div className="absolute top-full left-0 mt-1 w-44 bg-white border border-gray-200 rounded-lg shadow-lg z-50 overflow-hidden">
+            {['Soft Scrub', 'Kotex', 'Default Client'].map(c => (
+              <button key={c} onClick={() => setClientOpen(false)}
+                className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                {c}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
 
       {/* Market dropdown */}
       <div className="relative">
         <button
-          onClick={() => { setMarketOpen(o => !o); setClientSettingOpen(false); }}
-          className="flex items-center gap-1.5 text-white text-sm hover:bg-white/10 px-3 py-1.5 rounded-md transition-colors"
+          onClick={() => { setMarketOpen(o => !o); setClientOpen(false); setProjectOpen(false); }}
+          className="flex items-center gap-1 text-sm text-gray-600 hover:text-gray-900 px-2 py-1.5 rounded hover:bg-gray-50 transition-colors"
         >
-          <span className={`font-medium ${market === 'Global' ? 'text-[#FF3366]' : ''}`}>{market}</span>
-          <ChevronDown size={14} className="text-white/60" />
+          <span className="text-gray-400 text-xs">Market:</span>
+          <span className={`font-medium ml-1 ${market === 'Global' ? 'text-[#2563EB]' : 'text-gray-800'}`}>{market}</span>
+          <ChevronDown size={13} className="text-gray-400 ml-0.5" />
         </button>
         {marketOpen && (
-          <div className="absolute top-full left-0 mt-1 w-48 bg-[#1E2130] border border-white/10 rounded-lg shadow-xl overflow-hidden">
+          <div className="absolute top-full left-0 mt-1 w-44 bg-white border border-gray-200 rounded-lg shadow-lg z-50 overflow-hidden">
             {markets.map(m => (
               <button
                 key={m}
                 onClick={() => { onMarketChange(m); setMarketOpen(false); }}
-                className={`w-full text-left px-4 py-2.5 text-sm transition-colors
-                  ${market === m ? 'bg-white/10 text-white font-medium' : 'text-white/70 hover:bg-white/5 hover:text-white'}`}
+                className={`w-full text-left px-3 py-2 text-sm transition-colors
+                  ${market === m ? 'bg-blue-50 text-[#2563EB] font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
               >
                 {m}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Project dropdown */}
+      <div className="relative">
+        <button
+          onClick={() => { setProjectOpen(o => !o); setClientOpen(false); setMarketOpen(false); }}
+          className="flex items-center gap-1 text-sm px-2 py-1.5 rounded hover:bg-gray-50 transition-colors"
+        >
+          <span className="text-gray-400 text-xs">Project:</span>
+          <span className="text-gray-400 font-medium ml-1">Select Project</span>
+          <ChevronDown size={13} className="text-gray-400 ml-0.5" />
+        </button>
+        {projectOpen && (
+          <div className="absolute top-full left-0 mt-1 w-44 bg-white border border-gray-200 rounded-lg shadow-lg z-50 overflow-hidden">
+            {['Q1 2025 Campaign', 'Brand Refresh', 'Annual Planning'].map(p => (
+              <button key={p} onClick={() => setProjectOpen(false)}
+                className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                {p}
               </button>
             ))}
           </div>
@@ -53,33 +93,27 @@ export default function TopNav({ market, onMarketChange, onOpenCKB }) {
       {/* Spacer */}
       <div className="flex-1" />
 
-      {/* Client Setting dropdown */}
-      <div className="relative">
-        <button
-          onClick={() => { setClientSettingOpen(o => !o); setMarketOpen(false); }}
-          className="flex items-center gap-1.5 text-white/80 text-sm hover:bg-white/10 px-3 py-1.5 rounded-md transition-colors border border-white/20"
-        >
-          <Settings size={14} />
-          <span>Client Setting</span>
-          <ChevronDown size={14} className="text-white/60" />
+      {/* Right icons */}
+      <div className="flex items-center gap-1">
+        <button className="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded transition-colors">
+          <Bell size={16} />
         </button>
-        {clientSettingOpen && (
-          <div className="absolute top-full right-0 mt-1 w-52 bg-[#1E2130] border border-white/10 rounded-lg shadow-xl overflow-hidden">
-            <button
-              onClick={() => { onOpenCKB(); setClientSettingOpen(false); }}
-              className="w-full text-left px-4 py-2.5 text-sm text-white/80 hover:bg-white/5 hover:text-white transition-colors flex items-center gap-2"
-            >
-              <BookOpen size={14} className="text-[#0057FF]" />
-              Client Knowledge Bank
-            </button>
-          </div>
-        )}
+        <button className="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded transition-colors">
+          <HelpCircle size={16} />
+        </button>
+        {/* Client Setting — CKB access */}
+        <button
+          onClick={onOpenCKB}
+          title="Client Knowledge Bank"
+          className="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded transition-colors"
+        >
+          <Settings size={16} />
+        </button>
+        <div className="w-px h-5 bg-gray-200 mx-1" />
+        <div className="w-8 h-8 rounded-full bg-[#2563EB] flex items-center justify-center text-white text-xs font-bold ml-1">
+          KL
+        </div>
       </div>
-
-      {/* User avatar */}
-      <button className="w-8 h-8 rounded-full bg-[#0057FF] flex items-center justify-center text-white text-xs font-semibold ml-1">
-        SM
-      </button>
     </nav>
   );
 }

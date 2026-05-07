@@ -29,7 +29,7 @@ export default function AddFactForm({ onSave, onCancel }) {
         value={text}
         onChange={e => setText(e.target.value)}
         placeholder="Enter fact or contextual information..."
-        className="w-full border border-gray-300 rounded-lg p-3 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-[#0057FF] focus:border-transparent"
+        className="w-full border border-gray-300 rounded-lg p-3 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-[#2563EB] focus:border-transparent"
         rows={3}
       />
 
@@ -48,7 +48,7 @@ export default function AddFactForm({ onSave, onCancel }) {
                 value={opt.value}
                 checked={scopeType === opt.value}
                 onChange={() => setScopeType(opt.value)}
-                className="accent-[#0057FF]"
+                className="accent-[#2563EB]"
               />
               <span className="text-sm text-gray-700">{opt.label}</span>
             </label>
@@ -84,7 +84,7 @@ export default function AddFactForm({ onSave, onCancel }) {
         <button
           onClick={handleSave}
           disabled={!text.trim()}
-          className="px-4 py-1.5 text-sm font-medium text-white bg-[#0057FF] rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+          className="px-4 py-1.5 text-sm font-medium text-white bg-[#2563EB] rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
         >
           Save Fact
         </button>
