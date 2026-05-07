@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { ChevronDown, Bell, HelpCircle, Settings } from 'lucide-react';
+import { ChevronDown, Bell, HelpCircle, Menu } from 'lucide-react';
 
-export default function TopNav({ market, onMarketChange, onOpenCKB }) {
+export default function TopNav({ market, onMarketChange }) {
   const [marketOpen, setMarketOpen] = useState(false);
   const [clientOpen, setClientOpen] = useState(false);
   const [projectOpen, setProjectOpen] = useState(false);
@@ -10,24 +10,28 @@ export default function TopNav({ market, onMarketChange, onOpenCKB }) {
 
   return (
     <nav className="bg-white border-b border-gray-200 h-12 flex items-center px-4 gap-0 relative z-50 shrink-0">
+      {/* Hamburger */}
+      <button className="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded transition-colors mr-2">
+        <Menu size={18} />
+      </button>
+
       {/* OMNI+ logo */}
-      <div className="flex items-center gap-2 mr-4">
-        <div className="w-7 h-7 bg-gray-900 rounded flex items-center justify-center">
-          <span className="text-white font-bold text-xs tracking-tight">OMNI<span className="text-blue-400">+</span></span>
+      <div className="flex items-center gap-2 mr-5">
+        <div className="flex items-center gap-0.5">
+          <span className="font-bold text-gray-900 text-sm tracking-tight">OMNI</span>
+          <span className="font-bold text-[#2563EB] text-sm">+</span>
         </div>
         <span className="text-[#2563EB] font-semibold text-sm">Planning Console</span>
       </div>
-
-      <div className="w-px h-5 bg-gray-200 mx-3" />
 
       {/* Client dropdown */}
       <div className="relative">
         <button
           onClick={() => { setClientOpen(o => !o); setMarketOpen(false); setProjectOpen(false); }}
-          className="flex items-center gap-1 text-sm text-gray-600 hover:text-gray-900 px-2 py-1.5 rounded hover:bg-gray-50 transition-colors"
+          className="flex items-center gap-1 text-sm px-2 py-1.5 rounded hover:bg-gray-50 transition-colors"
         >
-          <span className="text-gray-400 text-xs">Client:</span>
-          <span className="font-medium text-gray-800 ml-1">Soft Scrub</span>
+          <span className="text-gray-500 text-xs">Client:</span>
+          <span className="font-medium text-gray-800 ml-0.5">Default Client</span>
           <ChevronDown size={13} className="text-gray-400 ml-0.5" />
         </button>
         {clientOpen && (
@@ -46,10 +50,10 @@ export default function TopNav({ market, onMarketChange, onOpenCKB }) {
       <div className="relative">
         <button
           onClick={() => { setMarketOpen(o => !o); setClientOpen(false); setProjectOpen(false); }}
-          className="flex items-center gap-1 text-sm text-gray-600 hover:text-gray-900 px-2 py-1.5 rounded hover:bg-gray-50 transition-colors"
+          className="flex items-center gap-1 text-sm px-2 py-1.5 rounded hover:bg-gray-50 transition-colors"
         >
-          <span className="text-gray-400 text-xs">Market:</span>
-          <span className={`font-medium ml-1 ${market === 'Global' ? 'text-[#2563EB]' : 'text-gray-800'}`}>{market}</span>
+          <span className="text-gray-500 text-xs">Market:</span>
+          <span className={`font-medium ml-0.5 ${market === 'Global' ? 'text-[#2563EB]' : 'text-gray-800'}`}>{market}</span>
           <ChevronDown size={13} className="text-gray-400 ml-0.5" />
         </button>
         {marketOpen && (
@@ -74,8 +78,8 @@ export default function TopNav({ market, onMarketChange, onOpenCKB }) {
           onClick={() => { setProjectOpen(o => !o); setClientOpen(false); setMarketOpen(false); }}
           className="flex items-center gap-1 text-sm px-2 py-1.5 rounded hover:bg-gray-50 transition-colors"
         >
-          <span className="text-gray-400 text-xs">Project:</span>
-          <span className="text-gray-400 font-medium ml-1">Select Project</span>
+          <span className="text-gray-500 text-xs">Project:</span>
+          <span className="text-gray-400 font-medium ml-0.5">Select Project</span>
           <ChevronDown size={13} className="text-gray-400 ml-0.5" />
         </button>
         {projectOpen && (
@@ -90,7 +94,6 @@ export default function TopNav({ market, onMarketChange, onOpenCKB }) {
         )}
       </div>
 
-      {/* Spacer */}
       <div className="flex-1" />
 
       {/* Right icons */}
@@ -101,17 +104,13 @@ export default function TopNav({ market, onMarketChange, onOpenCKB }) {
         <button className="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded transition-colors">
           <HelpCircle size={16} />
         </button>
-        {/* Client Setting — CKB access */}
-        <button
-          onClick={onOpenCKB}
-          title="Client Knowledge Bank"
-          className="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded transition-colors"
-        >
-          <Settings size={16} />
-        </button>
         <div className="w-px h-5 bg-gray-200 mx-1" />
-        <div className="w-8 h-8 rounded-full bg-[#2563EB] flex items-center justify-center text-white text-xs font-bold ml-1">
-          KL
+        {/* User avatar with flag */}
+        <div className="flex items-center gap-1">
+          <div className="w-7 h-7 rounded-full bg-[#1e3a5f] flex items-center justify-center text-white text-xs font-bold">
+            KL
+          </div>
+          <ChevronDown size={13} className="text-gray-400" />
         </div>
       </div>
     </nav>

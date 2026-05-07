@@ -173,68 +173,24 @@ export const FILES = [
 ];
 
 export const MEDIA_PLANS = [
-  {
-    id: 'mp1',
-    name: 'Q1 2025 — Digital Refresh',
-    brand: 'Soft Scrub Gel',
-    dateRange: 'Jan 1 – Mar 31, 2025',
-    budget: '$420,000',
-    status: 'Approved',
-  },
-  {
-    id: 'mp2',
-    name: 'Spring Clean Campaign',
-    brand: 'Soft Scrub Bleach Cleanser',
-    dateRange: 'Mar 15 – May 15, 2025',
-    budget: '$680,000',
-    status: 'In Review',
-  },
-  {
-    id: 'mp3',
-    name: 'Brand Awareness — All Products',
-    brand: 'All Brands',
-    dateRange: 'Feb 1 – Apr 30, 2025',
-    budget: '$1,200,000',
-    status: 'Draft',
-  },
-  {
-    id: 'mp4',
-    name: 'Retail Media — Walmart Q1',
-    brand: 'Soft Scrub Bleach Cleanser',
-    dateRange: 'Jan 1 – Mar 31, 2025',
-    budget: '$250,000',
-    status: 'Draft',
-  },
+  { id: 'mp1', name: 'Q1 2025 — Digital Refresh', brand: 'Soft Scrub Gel', dateRange: '31 Dec 2025 – 30 Dec 2026', creator: 'PM', creationDate: '07 May 2026' },
+  { id: 'mp2', name: 'Spring Clean Campaign', brand: 'Soft Scrub Bleach Cleanser', dateRange: '31 Dec 2025 – 30 Dec 2026', creator: 'OD', creationDate: '07 May 2026' },
+  { id: 'mp3', name: 'Brand Awareness — All Products', brand: 'All Brands', dateRange: '01 Jan 2026 – 30 Dec 2026', creator: 'AA', creationDate: '07 May 2026' },
+  { id: 'mp4', name: 'Retail Media — Walmart Q1', brand: 'Soft Scrub Bleach Cleanser', dateRange: '31 Dec 2025 – 30 Dec 2026', creator: 'PM', creationDate: '07 May 2026' },
+  { id: 'mp5', name: 'Soft Scrub Gel — Pinterest Push', brand: 'Soft Scrub Gel', dateRange: '01 Mar 2026 – 30 Jun 2026', creator: 'SM', creationDate: '06 May 2026' },
+  { id: 'mp6', name: 'Holiday Burst — November 2025', brand: 'All Brands', dateRange: '01 Nov 2025 – 30 Nov 2025', creator: 'AA', creationDate: '06 May 2026' },
+  { id: 'mp7', name: 'YouTube Demo Content Q2', brand: 'Soft Scrub Gel', dateRange: '01 Apr 2026 – 30 Jun 2026', creator: 'JO', creationDate: '05 May 2026' },
+  { id: 'mp8', name: 'Clorox Competitive Response', brand: 'Soft Scrub Bleach Cleanser', dateRange: '14 Nov 2025 – 23 Dec 2026', creator: 'PM', creationDate: '05 May 2026' },
 ];
 
 export const MULTIMARKET_PLANS = [
-  {
-    id: 'mm1',
-    name: 'Global Brand Platform 2025',
-    brand: 'All Brands',
-    markets: ['United States', 'United Kingdom', 'Canada'],
-    dateRange: 'Jan 1 – Dec 31, 2025',
-    budget: '$4,500,000',
-    status: 'Approved',
-  },
-  {
-    id: 'mm2',
-    name: 'EMEA Expansion — Gel Format',
-    brand: 'Soft Scrub Gel',
-    markets: ['United Kingdom', 'Germany', 'France', 'Netherlands'],
-    dateRange: 'Mar 1 – Aug 31, 2025',
-    budget: '$2,100,000',
-    status: 'In Review',
-  },
-  {
-    id: 'mm3',
-    name: 'North America Q2 Push',
-    brand: 'Soft Scrub Bleach Cleanser',
-    markets: ['United States', 'Canada', 'Mexico'],
-    dateRange: 'Apr 1 – Jun 30, 2025',
-    budget: '$1,800,000',
-    status: 'Draft',
-  },
+  { id: 'mm1', name: 'Global Brand Platform 2025', brand: 'All Brands', markets: ['United States', 'United Kingdom', 'Canada'], dateRange: '14 Jan 2025 – 23 Dec 2026', creator: 'PM', creationDate: '07 May 2026' },
+  { id: 'mm2', name: 'EMEA Expansion — Gel Format', brand: 'Soft Scrub Gel', markets: ['United Kingdom', 'Germany', 'France', 'Netherlands'], dateRange: '14 Jan 2025 – 23 Dec 2026', creator: 'OD', creationDate: '07 May 2026' },
+  { id: 'mm3', name: 'North America Q2 Push', brand: 'Soft Scrub Bleach Cleanser', markets: ['United States', 'Canada', 'Mexico'], dateRange: '02 Apr 2023 – 30 Mar 2023', creator: 'DT', creationDate: '07 May 2026' },
+  { id: 'mm4', name: 'Testing exchange rates on details page', brand: 'Soft Scrub Gel', markets: ['United States', 'United Kingdom'], dateRange: '31 Dec 2024 – 30 Dec 2025', creator: 'AA', creationDate: '07 May 2026' },
+  { id: 'mm5', name: 'Su23 Move to Zero new', brand: 'All Brands', markets: ['United States', 'Canada', 'Germany'], dateRange: '30 Apr 2026 – 30 Jul 2026', creator: 'OD', creationDate: '07 May 2026' },
+  { id: 'mm6', name: 'Embrace Luxury — Winter 2566', brand: 'Soft Scrub Bleach Cleanser', markets: ['United States', 'United Kingdom'], dateRange: '14 Jan 2025 – 30 Dec 2025', creator: 'AA', creationDate: '06 May 2026' },
+  { id: 'mm7', name: 'as-currency', brand: 'All Brands', markets: ['United States', 'Canada'], dateRange: '14 Jan 2025 – 30 Dec 2025', creator: 'AA', creationDate: '06 May 2026' },
 ];
 
 export const COPILOT_MESSAGES = [
