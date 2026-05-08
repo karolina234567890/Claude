@@ -105,6 +105,22 @@ export default function CKBFacts({ adminMode }) {
       <div className="max-w-4xl mx-auto">
         {/* Filter bar */}
         <div className="flex items-center gap-3 mb-6 flex-wrap">
+          {/* Expand / Collapse all */}
+          <button
+            onClick={() => {
+              const allOpen = filteredTopics.every(t => expanded[t.id]);
+              const next = {};
+              filteredTopics.forEach(t => { next[t.id] = !allOpen; });
+              setExpanded(next);
+            }}
+            className="flex items-center gap-1.5 text-xs font-medium text-gray-500 hover:text-gray-700 px-3 py-2 bg-white border border-gray-200 rounded-lg hover:border-gray-300 transition-colors shrink-0"
+          >
+            {filteredTopics.every(t => expanded[t.id]) ? (
+              <><ChevronDown size={13} className="rotate-180" /> Collapse all</>
+            ) : (
+              <><ChevronDown size={13} /> Expand all</>
+            )}
+          </button>
           {/* Brand scope filter */}
           <div className="relative">
             <button

@@ -21,7 +21,7 @@ const STEPS = [
 
 function SourceTooltip({ sources }) {
   return (
-    <div className="absolute bottom-full left-0 mb-2 w-[380px] bg-white border border-gray-200 rounded-xl shadow-2xl overflow-hidden z-50">
+    <div className="absolute bottom-full left-0 mb-2 w-[420px] bg-white border border-gray-200 rounded-xl shadow-2xl overflow-hidden z-50">
       <div className="px-4 py-2.5 bg-gray-50 border-b border-gray-100">
         <p className="text-xs text-gray-400 italic">
           Global and Market insights are managed externally and cannot be edited from Client Knowledge Bank.
@@ -30,29 +30,34 @@ function SourceTooltip({ sources }) {
       {sources.map((src, i) => {
         const Icon = LEVEL_ICONS[src.icon] || Globe;
         return (
-          <div key={i} className={`px-4 py-3 ${i < sources.length - 1 ? 'border-b border-gray-100' : ''} hover:bg-gray-50 transition-colors`}>
-            <div className="flex items-start gap-3">
-              <Icon size={14} className={`mt-0.5 shrink-0 ${src.external ? 'text-gray-400' : 'text-[#2563EB]'}`} />
-              <div>
-                <p className="text-xs font-semibold text-gray-800 mb-0.5">{src.level}</p>
-                <p className="text-xs text-gray-500 mb-1">{src.title}</p>
-                {src.external ? (
-                  <p className="text-xs text-gray-400 italic">Stored in: {src.storage}</p>
-                ) : (
-                  <div className="flex gap-1 flex-wrap">
-                    <span className="text-xs text-gray-400">Stored in: CKB</span>
-                    {src.file && (
-                      <>
-                        <span className="text-gray-300">·</span>
-                        <span className={`text-xs ${src.file === 'Manual input' ? 'text-gray-400 italic' : 'text-[#2563EB]'}`}>
-                          {src.file === 'Manual input' ? 'Manual input' : `File: ${src.file}`}
-                        </span>
-                      </>
-                    )}
-                  </div>
+          <div key={i} className={`px-4 py-4 ${i < sources.length - 1 ? 'border-b border-gray-100' : ''} hover:bg-gray-50 transition-colors`}>
+            {/* 1. Full fact text */}
+            <p className="text-sm text-gray-800 leading-relaxed mb-3">
+              "{src.fact}"
+            </p>
+            {/* 2. Fact level */}
+            <div className="flex items-center gap-1.5 mb-2">
+              <Icon size={12} className={`shrink-0 ${src.external ? 'text-gray-400' : 'text-[#2563EB]'}`} />
+              <span className={`text-xs font-semibold ${src.external ? 'text-gray-500' : 'text-[#2563EB]'}`}>{src.level}</span>
+              <span className="text-gray-300 text-xs">·</span>
+              <span className="text-xs text-gray-500">{src.title}</span>
+            </div>
+            {/* 3. Source & storage */}
+            {src.external ? (
+              <p className="text-xs text-gray-400 italic">Stored in: {src.storage}</p>
+            ) : (
+              <div className="flex gap-1 items-center flex-wrap">
+                <span className="text-xs text-gray-400">Stored in: CKB</span>
+                {src.file && (
+                  <>
+                    <span className="text-gray-300">·</span>
+                    <span className={`text-xs ${src.file === 'Manual input' ? 'text-gray-400 italic' : 'text-[#2563EB]'}`}>
+                      {src.file === 'Manual input' ? 'Manual input' : `File: ${src.file}`}
+                    </span>
+                  </>
                 )}
               </div>
-            </div>
+            )}
           </div>
         );
       })}

@@ -51,8 +51,9 @@ export default function CKBScreen({ onBack }) {
         </div>
       </div>
 
-      {/* White card — contains tabs + all content */}
-      <div className="flex-1 flex flex-col overflow-hidden mx-6 mb-6 bg-white rounded-2xl border border-gray-200" style={{ boxShadow: '0 1px 4px rgba(0,0,0,0.06)' }}>
+      {/* White card — constrained to same width as header */}
+      <div className="flex-1 flex flex-col overflow-hidden px-8 pb-8 min-h-0">
+      <div className="flex-1 flex flex-col overflow-hidden max-w-5xl w-full mx-auto bg-white rounded-2xl border border-gray-200" style={{ boxShadow: '0 1px 4px rgba(0,0,0,0.06)' }}>
 
         {/* Tabs */}
         <div className="flex gap-0 border-b border-gray-200 px-6 shrink-0">
@@ -90,6 +91,7 @@ export default function CKBScreen({ onBack }) {
             ? <CKBFacts adminMode={adminMode} />
             : <CKBFiles adminMode={adminMode} />}
         </div>
+      </div>
       </div>
     </div>
   );
