@@ -15,12 +15,8 @@ export default function TopNav({ market, onMarketChange }) {
         <Menu size={18} />
       </button>
 
-      {/* OMNI+ logo */}
-      <div className="flex items-center gap-2 mr-5">
-        <div className="flex items-center gap-0.5">
-          <span className="font-bold text-gray-900 text-sm tracking-tight">OMNI</span>
-          <span className="font-bold text-[#2563EB] text-sm">+</span>
-        </div>
+      {/* App name */}
+      <div className="flex items-center mr-5">
         <span className="text-[#2563EB] font-semibold text-sm">Planning Console</span>
       </div>
 
