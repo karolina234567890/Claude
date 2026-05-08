@@ -101,7 +101,7 @@ export default function CKBFacts({ adminMode }) {
   };
 
   return (
-    <div className="flex-1 overflow-auto bg-[#F8F9FC] p-6">
+    <div className="p-6">
       <div className="max-w-4xl mx-auto">
         {/* Filter bar */}
         <div className="flex items-center gap-3 mb-6 flex-wrap">

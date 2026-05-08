@@ -130,7 +130,7 @@ export default function CKBFiles({ adminMode }) {
   };
 
   return (
-    <div className="flex-1 overflow-auto bg-[#F8F9FC] p-6">
+    <div className="p-6">
       <div className="max-w-4xl mx-auto">
 
         {/* Upload area */}
