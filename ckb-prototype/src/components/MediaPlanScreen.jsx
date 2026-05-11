@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import {
   Sparkles, Send, BookOpen, Globe, MapPin, Building2, Tag,
   ChevronDown, ArrowLeft, FileText, BarChart2, Layers, PieChart, Maximize2
@@ -19,9 +19,9 @@ const STEPS = [
   { key: 'summary', label: 'SUMMARY', icon: PieChart },
 ];
 
-function SourceTooltip({ sources }) {
+function SourceTooltipContent({ sources }) {
   return (
-    <div className="absolute bottom-full left-0 mb-2 w-[420px] bg-white border border-gray-200 rounded-xl shadow-2xl overflow-hidden z-50">
+    <>
       <div className="px-4 py-2.5 bg-gray-50 border-b border-gray-100">
         <p className="text-xs text-gray-400 italic">
           Global and Market insights are managed externally and cannot be edited from Client Knowledge Bank.
@@ -31,18 +31,15 @@ function SourceTooltip({ sources }) {
         const Icon = LEVEL_ICONS[src.icon] || Globe;
         return (
           <div key={i} className={`px-4 py-4 ${i < sources.length - 1 ? 'border-b border-gray-100' : ''} hover:bg-gray-50 transition-colors`}>
-            {/* 1. Full fact text */}
             <p className="text-sm text-gray-800 leading-relaxed mb-3">
               "{src.fact}"
             </p>
-            {/* 2. Fact level */}
             <div className="flex items-center gap-1.5 mb-2">
               <Icon size={12} className={`shrink-0 ${src.external ? 'text-gray-400' : 'text-[#2563EB]'}`} />
               <span className={`text-xs font-semibold ${src.external ? 'text-gray-500' : 'text-[#2563EB]'}`}>{src.level}</span>
               <span className="text-gray-300 text-xs">·</span>
               <span className="text-xs text-gray-500">{src.title}</span>
             </div>
-            {/* 3. Source & storage */}
             {src.external ? (
               <p className="text-xs text-gray-400 italic">Stored in: {src.storage}</p>
             ) : (
@@ -61,15 +58,37 @@ function SourceTooltip({ sources }) {
           </div>
         );
       })}
-    </div>
+    </>
   );
 }
 
 export default function MediaPlanScreen({ onBack }) {
   const [messages, setMessages] = useState(COPILOT_MESSAGES);
   const [input, setInput] = useState('');
-  const [tooltipOpen, setTooltipOpen] = useState(false);
+  const [tooltip, setTooltip] = useState(null); // { sources, bottom, right }
+  const tooltipRef = useRef(null);
   const [activeStep, setActiveStep] = useState('details');
+
+  useEffect(() => {
+    if (!tooltip) return;
+    const handler = (e) => {
+      if (tooltipRef.current && !tooltipRef.current.contains(e.target)) {
+        setTooltip(null);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, [tooltip]);
+
+  const handleTooltipToggle = (e, sources) => {
+    if (tooltip) { setTooltip(null); return; }
+    const rect = e.currentTarget.getBoundingClientRect();
+    setTooltip({
+      sources,
+      bottom: window.innerHeight - rect.top + 8,
+      right: window.innerWidth - rect.right,
+    });
+  };
 
   const handleSend = () => {
     if (!input.trim()) return;
@@ -284,19 +303,17 @@ export default function MediaPlanScreen({ onBack }) {
 
                   {/* Source chip */}
                   {msg.sources && (
-                    <div className="ml-8 relative">
+                    <div className="ml-8">
                       <button
-                        onClick={() => setTooltipOpen(v => !v)}
+                        onClick={(e) => handleTooltipToggle(e, msg.sources)}
                         className={`flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border transition-colors
-                          ${tooltipOpen
+                          ${tooltip
                             ? 'bg-blue-50 border-blue-200 text-[#2563EB] font-medium'
                             : 'bg-white border-gray-200 text-gray-500 hover:border-gray-300 hover:text-gray-700'}`}
                       >
                         <BookOpen size={11} />
                         Based on {msg.sources.length} facts
                       </button>
-
-                      {tooltipOpen && <SourceTooltip sources={msg.sources} />}
                     </div>
                   )}
                 </div>
@@ -327,6 +344,24 @@ export default function MediaPlanScreen({ onBack }) {
           </div>
         </div>
       </div>
+
+      {/* Fixed-position tooltip — escapes overflow containers */}
+      {tooltip && (
+        <div
+          ref={tooltipRef}
+          style={{
+            position: 'fixed',
+            bottom: tooltip.bottom,
+            right: tooltip.right,
+            width: 420,
+            maxHeight: '70vh',
+            zIndex: 9999,
+          }}
+          className="bg-white border border-gray-200 rounded-xl shadow-2xl overflow-y-auto"
+        >
+          <SourceTooltipContent sources={tooltip.sources} />
+        </div>
+      )}
     </div>
   );
 }
