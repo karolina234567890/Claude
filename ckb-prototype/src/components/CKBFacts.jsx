@@ -36,6 +36,9 @@ export default function CKBFacts({ adminMode }) {
   const [addingTo, setAddingTo] = useState(null); // topicId
   const [editingFact, setEditingFact] = useState(null); // { topicId, factId }
   const [editText, setEditText] = useState('');
+  const [editScope, setEditScope] = useState(null); // scope object being edited
+  const [editScopeType, setEditScopeType] = useState('client');
+  const [editScopeBrands, setEditScopeBrands] = useState([]);
   const [editingSummary, setEditingSummary] = useState(null);
   const [summaryText, setSummaryText] = useState('');
   const [brandFilterOpen, setBrandFilterOpen] = useState(false);
@@ -83,11 +86,15 @@ export default function CKBFacts({ adminMode }) {
   };
 
   const handleEditSave = (topicId, factId) => {
+    const newScope =
+      editScopeType === 'client' ? { type: 'client' } :
+      editScopeType === 'all-brands' ? { type: 'all-brands' } :
+      { type: 'brands', brands: editScopeBrands };
     setTopics(prev => prev.map(t => {
       if (t.id !== topicId) return t;
       return {
         ...t,
-        facts: t.facts.map(f => f.id === factId ? { ...f, text: editText } : f),
+        facts: t.facts.map(f => f.id === factId ? { ...f, text: editText, scope: newScope } : f),
       };
     }));
     setEditingFact(null);
@@ -293,13 +300,59 @@ export default function CKBFacts({ adminMode }) {
                         >
                           {editingFact?.topicId === topic.id && editingFact?.factId === fact.id ? (
                             <div>
+                              {/* Text */}
                               <textarea
                                 value={editText}
                                 onChange={e => setEditText(e.target.value)}
                                 className="w-full border border-gray-300 rounded-lg p-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-[#2563EB]"
                                 rows={3}
                               />
-                              <div className="flex gap-2 mt-2 justify-end">
+
+                              {/* Scope editor */}
+                              <div className="mt-3 pt-3 border-t border-gray-100">
+                                <p className="text-xs font-medium text-gray-500 mb-2">Brand scope tag:</p>
+                                <div className="flex flex-col gap-1.5 mb-2">
+                                  {[
+                                    { value: 'client', label: `Whole client (${CLIENT.name})` },
+                                    { value: 'all-brands', label: 'All Brands' },
+                                    { value: 'brands', label: 'Specific brand(s)' },
+                                  ].map(opt => (
+                                    <label key={opt.value} className="flex items-center gap-2 cursor-pointer">
+                                      <input
+                                        type="radio"
+                                        name={`editScope-${fact.id}`}
+                                        value={opt.value}
+                                        checked={editScopeType === opt.value}
+                                        onChange={() => setEditScopeType(opt.value)}
+                                        className="accent-[#2563EB]"
+                                      />
+                                      <span className="text-xs text-gray-700">{opt.label}</span>
+                                    </label>
+                                  ))}
+                                </div>
+                                {editScopeType === 'brands' && (
+                                  <div className="flex flex-wrap gap-1.5 pl-5">
+                                    {CLIENT.brands.map(brand => (
+                                      <button
+                                        key={brand}
+                                        type="button"
+                                        onClick={() => setEditScopeBrands(prev =>
+                                          prev.includes(brand) ? prev.filter(b => b !== brand) : [...prev, brand]
+                                        )}
+                                        className={`text-xs px-2.5 py-1 rounded-full border transition-colors ${
+                                          editScopeBrands.includes(brand)
+                                            ? 'bg-[#F5F3FF] text-[#8B5CF6] border-[#DDD6FE] font-medium'
+                                            : 'bg-white text-gray-600 border-gray-300 hover:border-gray-400'
+                                        }`}
+                                      >
+                                        {brand}
+                                      </button>
+                                    ))}
+                                  </div>
+                                )}
+                              </div>
+
+                              <div className="flex gap-2 mt-3 justify-end">
                                 <button onClick={() => setEditingFact(null)} className="text-xs text-gray-500 px-3 py-1 rounded hover:bg-gray-100">Cancel</button>
                                 <button
                                   onClick={() => handleEditSave(topic.id, fact.id)}
@@ -328,7 +381,12 @@ export default function CKBFacts({ adminMode }) {
                                 {adminMode && (
                                   <div className="flex gap-1.5 shrink-0">
                                     <button
-                                      onClick={() => { setEditingFact({ topicId: topic.id, factId: fact.id }); setEditText(fact.text); }}
+                                      onClick={() => {
+                                        setEditingFact({ topicId: topic.id, factId: fact.id });
+                                        setEditText(fact.text);
+                                        setEditScopeType(fact.scope.type);
+                                        setEditScopeBrands(fact.scope.type === 'brands' ? [...fact.scope.brands] : []);
+                                      }}
                                       className="flex items-center gap-1 text-xs text-gray-500 hover:text-gray-700 px-2.5 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors"
                                     >
                                       <Pencil size={12} />
