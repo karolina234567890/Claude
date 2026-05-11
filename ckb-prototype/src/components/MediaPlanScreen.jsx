@@ -65,7 +65,7 @@ function SourceTooltipContent({ sources }) {
 export default function MediaPlanScreen({ onBack }) {
   const [messages, setMessages] = useState(COPILOT_MESSAGES);
   const [input, setInput] = useState('');
-  const [tooltip, setTooltip] = useState(null); // { sources, bottom, right }
+  const [tooltip, setTooltip] = useState(null); // { sources, top, right }
   const tooltipRef = useRef(null);
   const [activeStep, setActiveStep] = useState('details');
 
@@ -85,7 +85,7 @@ export default function MediaPlanScreen({ onBack }) {
     const rect = e.currentTarget.getBoundingClientRect();
     setTooltip({
       sources,
-      bottom: window.innerHeight - rect.top + 8,
+      top: rect.bottom + 8,
       right: window.innerWidth - rect.right,
     });
   };
@@ -345,13 +345,13 @@ export default function MediaPlanScreen({ onBack }) {
         </div>
       </div>
 
-      {/* Fixed-position tooltip — escapes overflow containers */}
+      {/* Fixed-position tooltip — opens below the pill */}
       {tooltip && (
         <div
           ref={tooltipRef}
           style={{
             position: 'fixed',
-            bottom: tooltip.bottom,
+            top: tooltip.top,
             right: tooltip.right,
             width: 420,
             maxHeight: '70vh',
