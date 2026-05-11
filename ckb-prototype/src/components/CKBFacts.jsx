@@ -36,6 +36,9 @@ export default function CKBFacts({ adminMode }) {
   const [addingTo, setAddingTo] = useState(null); // topicId
   const [editingFact, setEditingFact] = useState(null); // { topicId, factId }
   const [editText, setEditText] = useState('');
+  const [editScope, setEditScope] = useState(null); // scope object being edited
+  const [editScopeType, setEditScopeType] = useState('client');
+  const [editScopeBrands, setEditScopeBrands] = useState([]);
   const [editingSummary, setEditingSummary] = useState(null);
   const [summaryText, setSummaryText] = useState('');
   const [brandFilterOpen, setBrandFilterOpen] = useState(false);
@@ -83,11 +86,15 @@ export default function CKBFacts({ adminMode }) {
   };
 
   const handleEditSave = (topicId, factId) => {
+    const newScope =
+      editScopeType === 'client' ? { type: 'client' } :
+      editScopeType === 'all-brands' ? { type: 'all-brands' } :
+      { type: 'brands', brands: editScopeBrands };
     setTopics(prev => prev.map(t => {
       if (t.id !== topicId) return t;
       return {
         ...t,
-        facts: t.facts.map(f => f.id === factId ? { ...f, text: editText } : f),
+        facts: t.facts.map(f => f.id === factId ? { ...f, text: editText, scope: newScope } : f),
       };
     }));
     setEditingFact(null);
@@ -101,10 +108,26 @@ export default function CKBFacts({ adminMode }) {
   };
 
   return (
-    <div className="flex-1 overflow-auto bg-[#F8F9FC] p-6">
+    <div className="p-6">
       <div className="max-w-4xl mx-auto">
         {/* Filter bar */}
         <div className="flex items-center gap-3 mb-6 flex-wrap">
+          {/* Expand / Collapse all */}
+          <button
+            onClick={() => {
+              const allOpen = filteredTopics.every(t => expanded[t.id]);
+              const next = {};
+              filteredTopics.forEach(t => { next[t.id] = !allOpen; });
+              setExpanded(next);
+            }}
+            className="flex items-center gap-1.5 text-xs font-medium text-gray-500 hover:text-gray-700 px-3 py-2 bg-white border border-gray-200 rounded-lg hover:border-gray-300 transition-colors shrink-0"
+          >
+            {filteredTopics.every(t => expanded[t.id]) ? (
+              <><ChevronDown size={13} className="rotate-180" /> Collapse all</>
+            ) : (
+              <><ChevronDown size={13} /> Expand all</>
+            )}
+          </button>
           {/* Brand scope filter */}
           <div className="relative">
             <button
@@ -124,7 +147,7 @@ export default function CKBFacts({ adminMode }) {
                     key={opt.value}
                     onClick={() => { setBrandFilter(opt.value); setBrandFilterOpen(false); }}
                     className={`w-full text-left px-4 py-2.5 text-sm transition-colors flex items-center justify-between
-                      ${brandFilter === opt.value ? 'bg-blue-50 text-[#0057FF] font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
+                      ${brandFilter === opt.value ? 'bg-blue-50 text-[#2563EB] font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
                   >
                     {opt.label}
                     {brandFilter === opt.value && <Check size={14} />}
@@ -150,7 +173,7 @@ export default function CKBFacts({ adminMode }) {
                 <button
                   onClick={() => { setTopicFilter('all'); setTopicFilterOpen(false); }}
                   className={`w-full text-left px-4 py-2.5 text-sm transition-colors flex items-center justify-between
-                    ${topicFilter === 'all' ? 'bg-blue-50 text-[#0057FF] font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
+                    ${topicFilter === 'all' ? 'bg-blue-50 text-[#2563EB] font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
                 >
                   All topics
                   {topicFilter === 'all' && <Check size={14} />}
@@ -160,7 +183,7 @@ export default function CKBFacts({ adminMode }) {
                     key={t.id}
                     onClick={() => { setTopicFilter(t.id); setTopicFilterOpen(false); }}
                     className={`w-full text-left px-4 py-2.5 text-sm transition-colors flex items-center justify-between
-                      ${topicFilter === t.id ? 'bg-blue-50 text-[#0057FF] font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
+                      ${topicFilter === t.id ? 'bg-blue-50 text-[#2563EB] font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
                   >
                     {t.name}
                     {topicFilter === t.id && <Check size={14} />}
@@ -215,7 +238,7 @@ export default function CKBFacts({ adminMode }) {
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
-                      <Icon size={16} className="text-[#0057FF]" />
+                      <Icon size={16} className="text-[#2563EB]" />
                     </div>
                     <div>
                       <span className="font-semibold text-gray-900 text-sm">{topic.name}</span>
@@ -260,7 +283,7 @@ export default function CKBFacts({ adminMode }) {
                           />
                           <div className="flex gap-2 mt-2 justify-end">
                             <button onClick={() => setEditingSummary(null)} className="text-xs text-gray-500 px-3 py-1 rounded hover:bg-amber-100">Cancel</button>
-                            <button onClick={() => handleSummarySave(topic.id)} className="text-xs font-medium text-white bg-[#0057FF] px-3 py-1 rounded-lg">Save</button>
+                            <button onClick={() => handleSummarySave(topic.id)} className="text-xs font-medium text-white bg-[#2563EB] px-3 py-1 rounded-lg">Save</button>
                           </div>
                         </div>
                       ) : (
@@ -277,17 +300,63 @@ export default function CKBFacts({ adminMode }) {
                         >
                           {editingFact?.topicId === topic.id && editingFact?.factId === fact.id ? (
                             <div>
+                              {/* Text */}
                               <textarea
                                 value={editText}
                                 onChange={e => setEditText(e.target.value)}
-                                className="w-full border border-gray-300 rounded-lg p-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-[#0057FF]"
+                                className="w-full border border-gray-300 rounded-lg p-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-[#2563EB]"
                                 rows={3}
                               />
-                              <div className="flex gap-2 mt-2 justify-end">
+
+                              {/* Scope editor */}
+                              <div className="mt-3 pt-3 border-t border-gray-100">
+                                <p className="text-xs font-medium text-gray-500 mb-2">Brand scope tag:</p>
+                                <div className="flex flex-col gap-1.5 mb-2">
+                                  {[
+                                    { value: 'client', label: `Whole client (${CLIENT.name})` },
+                                    { value: 'all-brands', label: 'All Brands' },
+                                    { value: 'brands', label: 'Specific brand(s)' },
+                                  ].map(opt => (
+                                    <label key={opt.value} className="flex items-center gap-2 cursor-pointer">
+                                      <input
+                                        type="radio"
+                                        name={`editScope-${fact.id}`}
+                                        value={opt.value}
+                                        checked={editScopeType === opt.value}
+                                        onChange={() => setEditScopeType(opt.value)}
+                                        className="accent-[#2563EB]"
+                                      />
+                                      <span className="text-xs text-gray-700">{opt.label}</span>
+                                    </label>
+                                  ))}
+                                </div>
+                                {editScopeType === 'brands' && (
+                                  <div className="flex flex-wrap gap-1.5 pl-5">
+                                    {CLIENT.brands.map(brand => (
+                                      <button
+                                        key={brand}
+                                        type="button"
+                                        onClick={() => setEditScopeBrands(prev =>
+                                          prev.includes(brand) ? prev.filter(b => b !== brand) : [...prev, brand]
+                                        )}
+                                        className={`text-xs px-2.5 py-1 rounded-full border transition-colors ${
+                                          editScopeBrands.includes(brand)
+                                            ? 'bg-[#F5F3FF] text-[#8B5CF6] border-[#DDD6FE] font-medium'
+                                            : 'bg-white text-gray-600 border-gray-300 hover:border-gray-400'
+                                        }`}
+                                      >
+                                        {brand}
+                                      </button>
+                                    ))}
+                                  </div>
+                                )}
+                              </div>
+
+                              <div className="flex gap-2 mt-3 justify-end">
                                 <button onClick={() => setEditingFact(null)} className="text-xs text-gray-500 px-3 py-1 rounded hover:bg-gray-100">Cancel</button>
                                 <button
                                   onClick={() => handleEditSave(topic.id, fact.id)}
-                                  className="text-xs font-medium text-white bg-[#0057FF] px-3 py-1 rounded-lg"
+                                  className="text-xs font-medium text-white bg-[#2563EB] px-3 py-1 rounded-lg"
                                 >
                                   Save
                                 </button>
@@ -303,7 +372,7 @@ export default function CKBFacts({ adminMode }) {
                                     {fact.source.type === 'manual' ? (
                                       <span className="text-xs text-gray-400 italic">Manual input</span>
                                     ) : (
-                                      <button className="text-xs text-[#0057FF] underline underline-offset-2 hover:text-blue-800">
+                                      <button className="text-xs text-[#2563EB] underline underline-offset-2 hover:text-blue-800">
                                         {fact.source.name}
                                       </button>
                                     )}
@@ -312,7 +381,12 @@ export default function CKBFacts({ adminMode }) {
                                 {adminMode && (
                                   <div className="flex gap-1.5 shrink-0">
                                     <button
-                                      onClick={() => { setEditingFact({ topicId: topic.id, factId: fact.id }); setEditText(fact.text); }}
+                                      onClick={() => {
+                                        setEditingFact({ topicId: topic.id, factId: fact.id });
+                                        setEditText(fact.text);
+                                        setEditScopeType(fact.scope.type);
+                                        setEditScopeBrands(fact.scope.type === 'brands' ? [...fact.scope.brands] : []);
+                                      }}
                                       className="flex items-center gap-1 text-xs text-gray-500 hover:text-gray-700 px-2.5 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors"
                                     >
                                       <Pencil size={12} />
@@ -345,7 +419,7 @@ export default function CKBFacts({ adminMode }) {
                         ) : (
                           <button
                             onClick={() => setAddingTo(topic.id)}
-                            className="flex items-center gap-1.5 text-xs font-medium text-[#0057FF] hover:text-blue-800 px-3 py-2 rounded-lg hover:bg-blue-50 transition-colors border border-dashed border-[#0057FF]/30 w-full justify-center"
+                            className="flex items-center gap-1.5 text-xs font-medium text-[#2563EB] hover:text-blue-800 px-3 py-2 rounded-lg hover:bg-blue-50 transition-colors border border-dashed border-[#2563EB]/30 w-full justify-center"
                           >
                             <Plus size={13} />
                             Add fact to this topic
