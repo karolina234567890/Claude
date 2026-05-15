@@ -65,7 +65,7 @@ function SourceTooltipContent({ sources }) {
 export default function MediaPlanScreen({ onBack }) {
   const [messages, setMessages] = useState(COPILOT_MESSAGES);
   const [input, setInput] = useState('');
-  const [tooltip, setTooltip] = useState(null); // { sources, top, right }
+  const [tooltip, setTooltip] = useState(null);
   const tooltipRef = useRef(null);
   const [activeStep, setActiveStep] = useState('details');
 
@@ -83,11 +83,22 @@ export default function MediaPlanScreen({ onBack }) {
   const handleTooltipToggle = (e, sources) => {
     if (tooltip) { setTooltip(null); return; }
     const rect = e.currentTarget.getBoundingClientRect();
-    setTooltip({
-      sources,
-      top: rect.bottom + 8,
-      right: window.innerWidth - rect.right,
-    });
+    const MARGIN = 8;
+    const W = Math.min(420, window.innerWidth - MARGIN * 2);
+
+    // Horizontal: right-align with button, clamp so left edge never goes off-screen
+    const right = Math.max(MARGIN, window.innerWidth - rect.right);
+    const leftEdge = window.innerWidth - right - W;
+    const clampedRight = leftEdge < MARGIN ? window.innerWidth - W - MARGIN : right;
+
+    // Vertical: show below if enough room, otherwise above
+    const spaceBelow = window.innerHeight - rect.bottom - MARGIN;
+    const spaceAbove = rect.top - MARGIN;
+    const pos = spaceBelow >= spaceAbove || spaceBelow >= 220
+      ? { top: rect.bottom + MARGIN, maxH: Math.max(spaceBelow, 120) }
+      : { bottom: window.innerHeight - rect.top + MARGIN, maxH: Math.max(spaceAbove, 120) };
+
+    setTooltip({ sources, right: clampedRight, width: W, ...pos });
   };
 
   const handleSend = () => {
@@ -345,16 +356,16 @@ export default function MediaPlanScreen({ onBack }) {
         </div>
       </div>
 
-      {/* Fixed-position tooltip — opens below the pill */}
+      {/* Fixed-position tooltip — smart placement based on available viewport space */}
       {tooltip && (
         <div
           ref={tooltipRef}
           style={{
             position: 'fixed',
-            top: tooltip.top,
+            ...(tooltip.top !== undefined ? { top: tooltip.top } : { bottom: tooltip.bottom }),
             right: tooltip.right,
-            width: 420,
-            maxHeight: '70vh',
+            width: tooltip.width,
+            maxHeight: tooltip.maxH,
             zIndex: 9999,
           }}
           className="bg-white border border-gray-200 rounded-xl shadow-2xl overflow-y-auto"
